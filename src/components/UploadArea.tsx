@@ -4,6 +4,7 @@ import { Upload, Loader2, File, CheckCircle, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 interface UploadAreaProps {
   className?: string;
@@ -18,6 +19,7 @@ const UploadArea: React.FC<UploadAreaProps> = ({ className }) => {
   const [progress, setProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -58,6 +60,11 @@ const UploadArea: React.FC<UploadAreaProps> = ({ className }) => {
             title: "Upload complete",
             description: "Your contract has been successfully uploaded",
           });
+          
+          // After successful upload, redirect to results page
+          setTimeout(() => {
+            navigate('/results', { state: { fileName: file.name } });
+          }, 1500);
         }, 500);
       }
     }, 200);
